@@ -3,7 +3,7 @@ import fs from "fs"
 
 
 cloudinary.config({
-  cloud_name: "dzrfreuur",
-  api_key: "334763819733622",
-  api_secret: "<your_api_secret>", // Click 'View API Keys' above to copy your API secret
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET, // Click 'View API Keys' above to copy your API secret
 });
