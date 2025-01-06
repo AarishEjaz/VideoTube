@@ -52,7 +52,7 @@ const userSchema = new mongoose.Schema({
 
 userSchma.pre("save", async function(next){
   if(!this.isModified("password")) return next() //if negative checking is not don then you can write the encryption code in side the "if" block
-  this.password = bcrypt.hash(this.password,10) // might need to add await
+  this.password = await bcrypt.hash(this.password,10) // might need to add await
   next()
 
 })
