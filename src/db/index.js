@@ -21,3 +21,21 @@ const connectDB = async () =>{
 
 
 export default connectDB
+
+// const connectDB = async () => {
+//   try {
+//     const connectionInstance = await mongoose.connect(
+//       "mongodb+srv://AarishEjaz:aarish12345@cluster0.jm09f.mongodb.net/videotube"
+//     );
+//     console.log(
+//       `\n MongoDB connected DB HOST: ${connectionInstance.connection.host}`
+//     );
+//   } catch (error) {
+//     console.log("hello" + error.message);
+//     process.exit(1);
+//   }
+// };
+
+// export default connectDB;
+
+// mongodb+srv://AarishEjaz:aarish12345@cluster0.jm09f.mongodb.net/
