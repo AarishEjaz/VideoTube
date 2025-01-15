@@ -4,6 +4,7 @@ import {User} from "../models/user.model.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import mongoose from "mongoose";
+import { runInNewContext } from "vm";
 
 const generateAccessAndRefreshTokens = async(userId)=>{
     try{
@@ -38,7 +39,7 @@ const registerUser = asyncHandler(async(req,res) =>{
 
     const avatarLocalPath = req.files?.avatar[0]?.path
      const coverImageLocalPath = req.files?.coverImage[0]?.path;
-    console.log(req.file)
+
 
     if(!avatarLocalPath){
         throw new ApiError(400,"Avatar is required")
@@ -77,12 +78,15 @@ const registerUser = asyncHandler(async(req,res) =>{
 const loginUser = asyncHandler(async(req,res)=>{
     const {email,password,username} = req.body
 
-    if(!username || !email){
-        throw new ApiError(400, "username or passowrd is required")
+
+    if(!(username || email)){
+        throw new ApiError(400, "username or email is required")
     }
 
     const user = await User.findOne({
-      $or: [{ username }, { email }],
+        $or: [
+            {email},{username}
+        ]
     });
 
     if(!user){
@@ -116,13 +120,33 @@ const loginUser = asyncHandler(async(req,res)=>{
         )
     )
 
-    console.log(user)
 
 
 })
 
 const logOutUser = asyncHandler(async(req,res)=>{
-    User.findById
+    User.findByIdAndUpdate(
+        req.user._id,
+        {
+            $set:{
+                refreshToken:undefined
+            },
+        },
+        {
+            new:true
+        }
+
+    )
+    const options = {
+        httpOnly:true,
+        secure:true
+    }
+
+    return res
+      .status(200)
+      .clearCookie("accessToken", options)
+      .clearCookie("refreshToken", options)
+      .json(new ApiResponse(200,{},"User logged Out"))
 })
 
-export {registerUser,loginUser}
+export {registerUser,loginUser,logOutUser}
