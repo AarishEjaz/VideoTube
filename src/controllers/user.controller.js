@@ -214,4 +214,21 @@ const getCurrentUser = asyncHandler(async(req,res)=>{
     return res.status(200).json(200,req.user,"Current user successfully fetched")
 })
 
-export {registerUser,loginUser,logOutUser,refreshAccessToken}
+const updateAccoutnDetails = asyncHandler(async(req,res)=>{
+    const {fullName,email} = req.body
+    if (!email || !fullName) {
+      throw new ApiError(400, "fullName and email is required");
+    }
+
+    const user = await User.findById(req.user._id,
+    {
+        $set:{
+            fullName,
+            email:email
+        }
+    },
+    {new:true})
+    user
+})
+
+export {registerUser,loginUser,logOutUser,refreshAccessToken,changeCurrentPassword,getCurrentUser}
