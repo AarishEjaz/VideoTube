@@ -270,11 +270,17 @@ const updateCoverImage = asyncHandler(async (req, res) => {
     req.user?._id,
     {
       $set: {
-        avatar: coverImage.url,
+        coverImage: coverImage.url,
       },
     },
     { new: true }
   ).select("-password");
+
+  return res
+  .status(200)
+  .json(
+    new ApiResponse(200,"updated cover image")
+  )
 });
 
-export {registerUser,loginUser,logOutUser,refreshAccessToken,changeCurrentPassword,getCurrentUser,updateAccoutnDetails,updateUserAvatar}
+export {registerUser,loginUser,logOutUser,refreshAccessToken,changeCurrentPassword,getCurrentUser,updateAccoutnDetails,updateUserAvatar,updateCoverImage}
