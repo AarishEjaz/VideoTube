@@ -211,7 +211,7 @@ const changeCurrentPassword = asyncHandler(async(req,res)=>{
 })
 
 const getCurrentUser = asyncHandler(async(req,res)=>{
-    return res.status(200).json(200,req.user,"Current user successfully fetched")
+    return res.status(200).json(new ApiResponse(200,{},"User fetched successfully"))
 })
 
 const updateAccoutnDetails = asyncHandler(async(req,res)=>{
@@ -220,7 +220,7 @@ const updateAccoutnDetails = asyncHandler(async(req,res)=>{
       throw new ApiError(400, "fullName and email is required");
     }
 
-    const user = await User.findById(req.user._id,
+    const user = await User.findById(req.user?._id,
     {
         $set:{
             fullName,
